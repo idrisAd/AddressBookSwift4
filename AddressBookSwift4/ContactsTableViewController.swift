@@ -44,7 +44,7 @@ class ContactsTableViewController: UITableViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        appDelegate().updateDataFromServer()
+        self.appDelegate().updateDataFromServer()
     }
 
     // Controller capable de voir les modifs en base

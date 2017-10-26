@@ -50,18 +50,23 @@ class AddViewController: UIViewController {
         var progressB = self.progressBar.progress
         
         // - - - - - - - - - - - - - - - - - - - - - - - - - -
-        let parameters = [""]
-        
-        let url = URL(string : "http://10.1.0.242:3000/persons")!
-        
-        let session = URLSession.shared
-        
-        var request = URLRequest(url: url)
-        request.httpMethod = "POST"
-        
-        do {
-            request.httpBody = try JSONSerialization.data(withJSONObject: <#T##Any#>, options: <#T##JSONSerialization.WritingOptions#>)
-        }
+//        let parameters = ["surname": nameField, "lastname": prenomField, "pictureUrl": "https://i.imgur.com/jNNT4LE.jpg"]
+//
+//        let url = URL(string : "http://10.1.0.242:3000/persons")!
+//
+//        let session = URLSession.shared
+//
+//        var request = URLRequest(url: url)
+//        request.httpMethod = "POST"
+//
+//        do {
+//            request.httpBody = try JSONSerialization.data(withJSONObject: parameters, options: .prettyPrinted)
+//        } catch let error {
+//            print(error.localizedDescription)
+//        }
+//
+//        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+//        request.addValue("application/json", forHTTPHeaderField: "Accept")
         
         
         

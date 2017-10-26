@@ -107,18 +107,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
             
             //TODO: Fetch entity from databes and compare ids
-            
-            
-            // Create entity
-            
-//            let context = self.persistentContainer.viewContext
-//            for personDict in jsonDict {
-//                let person = Person(entity: Person.entity(), insertInto: context)
-//                person.firstName = personDict ["surname"] as? String ?? "DefaultName"
-//                person.lastName = personDict ["lastname"] as? String ?? "DefaultName"
-//            }
-//            try? context.save()
-            
+
         }
         // Start task
         task.resume()
