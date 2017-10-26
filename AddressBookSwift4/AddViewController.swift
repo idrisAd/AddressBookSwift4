@@ -49,7 +49,25 @@ class AddViewController: UIViewController {
         
         var progressB = self.progressBar.progress
         
-        // Add a progress bar
+        // - - - - - - - - - - - - - - - - - - - - - - - - - -
+        let parameters = [""]
+        
+        let url = URL(string : "http://10.1.0.242:3000/persons")!
+        
+        let session = URLSession.shared
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        
+        do {
+            request.httpBody = try JSONSerialization.data(withJSONObject: <#T##Any#>, options: <#T##JSONSerialization.WritingOptions#>)
+        }
+        
+        
+        
+        
+        
+        // Progress bar for loading the addition
         
         DispatchQueue.global(qos: .background).async {
             let counter: Float = 0.0
