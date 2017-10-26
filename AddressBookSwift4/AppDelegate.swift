@@ -13,6 +13,7 @@ import CoreData
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
+    let apiPersonUrl = "http://10.1.0.242:3000/persons"
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
@@ -89,6 +90,89 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
     }
 
+    
+    func updateDataFromServer(){
+        
+        let url = URL(string: apiPersonUrl)!
+        
+        let task = URLSession.shared.dataTask(with: url){ (data, response, error) in
+            
+            guard let data = data else{
+                return
+            }
+            let dictionnary = try? JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.mutableContainers)
+            
+            guard let jsonDict = dictionnary as? [[String : Any]] else{
+                return
+            }
+            
+            //TODO: Fetch entity from databes and compare ids
+            
+            
+            // Create entity
+            
+//            let context = self.persistentContainer.viewContext
+//            for personDict in jsonDict {
+//                let person = Person(entity: Person.entity(), insertInto: context)
+//                person.firstName = personDict ["surname"] as? String ?? "DefaultName"
+//                person.lastName = personDict ["lastname"] as? String ?? "DefaultName"
+//            }
+//            try? context.save()
+            
+        }
+        // Start task
+        task.resume()
+    }
+    
+    
+    func updateFromJsonData(json: [[String : Any]]){
+        let sort = NSSortDescriptor(key: "id", ascending: true)
+        let fetchRequest = NSFetchRequest<Person>(entityName : "Person")
+        fetchRequest.sortDescriptors = [sort]
+        
+        let context = self.persistentContainer.viewContext
+        
+        let persons = try! context.fetch(fetchRequest)
+        let personIds = persons.map({ (person) -> Int32 in
+            return person.id
+        })
+        
+        let serversid = json.map{ (dict) -> Int in
+            return dict["id"] as? Int ?? 0
+        }
+        
+        // Delete data that is not on server
+        for person in persons{
+            if !serversid.contains(Int(person.id)){
+                context.delete(person)
+            }
+        }
+        
+        // Update or create
+        for jsonPerson in json {
+            let id = jsonPerson["id"] as? Int ?? 0
+            if let index = personIds.index(of: Int32(id)) {
+                persons[index].lastName = jsonPerson["lastName"] as? String ?? "ERROR"
+                persons[index].firstName = jsonPerson["firstName"] as? String ?? "ERROR"
+                persons[index].avatarUrl = jsonPerson["avatarUrl"] as? String
+            } else {
+                let person = Person(context: context)
+                person.lastName = jsonPerson["lastname"] as? String
+                person.firstName = jsonPerson["surname"] as? String
+                person.avatarUrl = jsonPerson["avatarUrl"] as? String
+                person.id = Int32(id)
+            }
+        }
+        
+        do {
+            if context.hasChanges {
+                try context.save()
+            }
+        }catch{
+            print(error)
+        }
+        
+    }
 }
 
 extension UIViewController{

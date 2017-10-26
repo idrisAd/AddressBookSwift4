@@ -8,3 +8,17 @@
 
 import Foundation
 
+extension Person {
+    
+    var firstLetter: String {
+        
+        if let first = lastName?.characters.first {
+            return String(first)
+        } else {
+            return "?"
+        }
+    }
+    
+    
+    
+}

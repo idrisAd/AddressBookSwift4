@@ -24,21 +24,14 @@
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GiL-uJ-kkh">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GiL-uJ-kkh">
+                                            <rect key="frame" x="0.0" y="23" width="42" height="20.5"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                     </subviews>
-                                    <constraints>
-                                        <constraint firstItem="GiL-uJ-kkh" firstAttribute="leading" secondItem="d2u-MV-ZkI" secondAttribute="leading" id="17y-rn-Aby"/>
-                                        <constraint firstAttribute="bottom" secondItem="GiL-uJ-kkh" secondAttribute="bottom" id="ZZ8-bR-PWi"/>
-                                        <constraint firstAttribute="trailing" secondItem="GiL-uJ-kkh" secondAttribute="trailing" id="juD-MD-0VC"/>
-                                        <constraint firstAttribute="trailing" secondItem="GiL-uJ-kkh" secondAttribute="trailing" id="jyl-cR-Jsc"/>
-                                        <constraint firstItem="GiL-uJ-kkh" firstAttribute="leading" secondItem="d2u-MV-ZkI" secondAttribute="leading" id="ltc-zP-mrV"/>
-                                        <constraint firstItem="GiL-uJ-kkh" firstAttribute="top" secondItem="d2u-MV-ZkI" secondAttribute="top" id="zqy-e6-Zsd"/>
-                                    </constraints>
                                 </tableViewCellContentView>
                                 <connections>
                                     <outlet property="nameLabel" destination="GiL-uJ-kkh" id="8ch-tl-nxl"/>

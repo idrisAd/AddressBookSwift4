@@ -24,7 +24,6 @@ class ContactsTableViewController: UITableViewController {
     
     var persons = [Person]()
     
-    
     func reloadDataFromDataBase(){
         let fetchRequest = NSFetchRequest<Person>(entityName: "Person")
         let sortFirstName = NSSortDescriptor(key: "firstName", ascending: true)
@@ -41,28 +40,31 @@ class ContactsTableViewController: UITableViewController {
         persons = personCD
         self.tableView.reloadData()
         
-        
-        // Example for delete a person
-        
-        // let person = person [0]
-        // context.delete(person)
-        // try? context.save()
-        
-        // Edit a person
-        // person.lastName = "bjr"
-        // try? context.save()
         }
     }
-
     
     override func viewWillAppear(_ animated: Bool) {
-        self.reloadDataFromDataBase()
+        appDelegate().updateDataFromServer()
     }
 
+    // Controller capable de voir les modifs en base
+    var resultController: NSFetchedResultsController<Person>!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        let fetchRequest = NSFetchRequest<Person>(entityName: "Person")
+        let sortFirstName = NSSortDescriptor(key: "firstName", ascending: true)
+        let sortLastName = NSSortDescriptor(key: "lastName", ascending: true)
+        fetchRequest.sortDescriptors = [sortFirstName,sortLastName]
+        
+        resultController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: self.appDelegate().persistentContainer.viewContext,
+                                                      sectionNameKeyPath: nil, cacheName: nil)
+        resultController.delegate = self
+        
+        try! resultController.performFetch()
         
         
+        self.tableView.reloadData()
         // Alert for the first launch
         if UserDefaults.standard.isFirstLaunch(){
             let alertController = UIAlertController(title: "Bienvenue", message: "Dans cette application permettant la gestion de contact", preferredStyle: .alert)
@@ -76,46 +78,7 @@ class ContactsTableViewController: UITableViewController {
             
         }
         
-        // Import of names.plist
-        let namesPlist = Bundle.main.path(forResource: "names.plist", ofType: nil)
-        if let namePath = namesPlist{
-            
-            let url = URL(fileURLWithPath: namePath)
-            let dataArray = NSArray(contentsOf: url)
-            
-            for dict in dataArray!{
-                if let dictionnary = dict as? [String: String]{
-                    
-                    // With PErson class
-                    //TODO/ FIX let person = Person(firstName: dictionnary["name"]!, lastName: dictionnary["lastName"]!)
-                    
-                    //let person = persons.append(dictionnary["name"]!)
-                    print(dictionnary)
-                }
-            }
-            print(dataArray)
-        }
-        
-        
         self.title = "Mes contacts"
-        
-//            let context = self.appDelegate().persistentContainer.viewContext
-//            //let person = Person(entity: Person.entity(), insertInto: context)
-//            //person.firstName = "Michel"
-//            //person.lastName = "Berger"
-//            do{
-//                try context.save()
-//            } catch {
-//                print(error.localizedDescription)
-//            }
-
-        
-
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem
         
         let addContact = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addContactPress))
         self.navigationItem.rightBarButtonItem = addContact
@@ -141,12 +104,17 @@ class ContactsTableViewController: UITableViewController {
 
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
-        return 1
+        return resultController.sections!.count
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return persons.count
+        guard let sections = self.resultController?.sections else {
+            fatalError("No sections in fetchedResultsController")
+        }
+        let sectionInfo = sections[section]
+        return sectionInfo.numberOfObjects
+        
     }
 
     
@@ -158,25 +126,19 @@ class ContactsTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ContactTableViewCell", for: indexPath)
         
-        if let contactCell = cell as? ContactTableViewCell {
-            contactCell.nameLabel.text = persons[indexPath.row].firstName! + " " +  persons[indexPath.row].lastName!
-            
-        }
-
-        // Configure the cell...
-
+        let currentPerson = resultController.object(at: indexPath)
+            cell.textLabel?.text = String(currentPerson.lastName! + " " + currentPerson.firstName!)
         return cell
+        
     }
     
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let controller = DetailsViewController(nibName: nil, bundle: nil)
-        controller.person = persons[indexPath.row]
+        controller.person = resultController.object(at: indexPath)
         self.navigationController?.pushViewController(controller, animated: true)
     
     }
-    
-    
     
     /*
     // Override to support conditional editing of the table view.
@@ -223,4 +185,16 @@ class ContactsTableViewController: UITableViewController {
     }
     */
 
+}
+
+extension ContactsTableViewController : NSFetchedResultsControllerDelegate{
+    
+    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        self.tableView.reloadData()
+    }
+    
+    
+    
+    
+  
 }

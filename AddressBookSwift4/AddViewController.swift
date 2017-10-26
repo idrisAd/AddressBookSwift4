@@ -45,6 +45,8 @@ class AddViewController: UIViewController {
         let personne = Person(entity: Person.entity(), insertInto: context)
         personne.firstName = prenomField
         personne.lastName = nameField
+        try? context.save()
+        
         var progressB = self.progressBar.progress
         
         // Add a progress bar
