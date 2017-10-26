@@ -10,7 +10,7 @@ import UIKit
 
 
 protocol AddViewControllerDelegate: AnyObject {
-    func createPerson(name: String)
+    func createPerson(/*name: String*/person: Person)
 }
 
 class AddViewController: UIViewController {
@@ -38,10 +38,13 @@ class AddViewController: UIViewController {
     
     @IBAction func addButtonPress(_ sender: Any) {
         print("ajout")
-        guard let nameField = self.nameText.text /*, let prenomField = self.prenomText.text*/ else{
+        guard let nameField = self.nameText.text , let prenomField = self.prenomText.text else{
             return
         }
-        
+        let context = self.appDelegate().persistentContainer.viewContext
+        let personne = Person(entity: Person.entity(), insertInto: context)
+        personne.firstName = prenomField
+        personne.lastName = nameField
         var progressB = self.progressBar.progress
         
         
@@ -67,7 +70,7 @@ class AddViewController: UIViewController {
                 }
             }
             DispatchQueue.main.async {
-                self.delegate?.createPerson(name: nameField)
+                self.delegate?.createPerson(person: personne)
             }
             
         }

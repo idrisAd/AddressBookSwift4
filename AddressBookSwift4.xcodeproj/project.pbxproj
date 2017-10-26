@@ -22,6 +22,7 @@
 		FDA1AF3C1FA0BB8400E97533 /* DetailsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FDA1AF3A1FA0BB8400E97533 /* DetailsViewController.xib */; };
 		FDA1AF3E1FA0D3FB00E97533 /* names.plist in Resources */ = {isa = PBXBuildFile; fileRef = FDA1AF3D1FA0D3FB00E97533 /* names.plist */; };
 		FDA1AF401FA0D9B900E97533 /* Person.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDA1AF3F1FA0D9B900E97533 /* Person.swift */; };
+		FDA1AF421FA1CE7800E97533 /* UserDefaultSetting.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDA1AF411FA1CE7800E97533 /* UserDefaultSetting.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -63,6 +64,7 @@
 		FDA1AF3A1FA0BB8400E97533 /* DetailsViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DetailsViewController.xib; sourceTree = "<group>"; };
 		FDA1AF3D1FA0D3FB00E97533 /* names.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = names.plist; sourceTree = "<group>"; };
 		FDA1AF3F1FA0D9B900E97533 /* Person.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Person.swift; sourceTree = "<group>"; };
+		FDA1AF411FA1CE7800E97533 /* UserDefaultSetting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultSetting.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -116,6 +118,7 @@
 				FDA1AF3D1FA0D3FB00E97533 /* names.plist */,
 				FD9B5F671FA07FE700E26048 /* AppDelegate.swift */,
 				FDA1AF3F1FA0D9B900E97533 /* Person.swift */,
+				FDA1AF411FA1CE7800E97533 /* UserDefaultSetting.swift */,
 				FD9B5F6B1FA07FE700E26048 /* Main.storyboard */,
 				FD9B5F981FA0806800E26048 /* ContactsTableViewController.swift */,
 				FD9B5F9A1FA0821600E26048 /* ContactTableViewCell.swift */,
@@ -291,6 +294,7 @@
 				FD9B5F701FA07FE700E26048 /* AddressBookSwift4.xcdatamodeld in Sources */,
 				FD9B5F681FA07FE700E26048 /* AppDelegate.swift in Sources */,
 				FDA1AF401FA0D9B900E97533 /* Person.swift in Sources */,
+				FDA1AF421FA1CE7800E97533 /* UserDefaultSetting.swift in Sources */,
 				FD9B5F991FA0806800E26048 /* ContactsTableViewController.swift in Sources */,
 				FDA1AF3B1FA0BB8400E97533 /* DetailsViewController.swift in Sources */,
 			);

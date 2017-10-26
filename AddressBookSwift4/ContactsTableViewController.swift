@@ -7,24 +7,66 @@
 //
 
 import UIKit
+import CoreData
 
 extension ContactsTableViewController: AddViewControllerDelegate{
     
-    func createPerson(name: String) {
+    func createPerson(person: Person) {
         print("create person")
-        persons.append(name)
+        //persons.append(person)
         navigationController?.popViewController(animated: true)
-        self.tableView.reloadData()
+        reloadDataFromDataBase()
         
     }
 }
 
 class ContactsTableViewController: UITableViewController {
     
-    var persons = [String]()
+    var persons = [Person]()
+    
+    //var resultController: NSFetchedResultsController<Person>!
+    
+    func reloadDataFromDataBase(){
+        let fetchRequest = NSFetchRequest<Person>(entityName: "Person")
+        let sortFirstName = NSSortDescriptor(key: "firstName", ascending: true)
+        let sortLastName = NSSortDescriptor(key: "lastName", ascending: true)
+        fetchRequest.sortDescriptors = [sortFirstName,sortLastName]
+        
+        let context = self.appDelegate().persistentContainer.viewContext
+        
+        print(try? context.fetch(fetchRequest))
+        // Add in persons : [Person]
+        
+        guard let personCD = try? context.fetch(fetchRequest) else{
+            return
+        }
+        persons = personCD
+        self.tableView.reloadData()
+        
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        self.reloadDataFromDataBase()
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        
+        // Alerte de premier lancement
+        if UserDefaults.standard.isFirstLaunch(){
+            let alertController = UIAlertController(title: "Bienvenue", message: "Dans cette application permettant la gestion de contact", preferredStyle: .alert)
+            let OKAction = UIAlertAction(title: "OK", style: .default){
+                (action) in
+                
+                UserDefaults.standard.userSawWelcomeMessage()
+            }
+            alertController.addAction(OKAction)
+            self.present(alertController, animated: true, completion:nil)
+            
+        }
+        
+
         
         // Import of names.plist
         let namesPlist = Bundle.main.path(forResource: "names.plist", ofType: nil)
@@ -39,24 +81,29 @@ class ContactsTableViewController: UITableViewController {
                 if let dictionnary = dict as? [String: String]{
                     
                     // Avec la classe Person
-                    //let person = Person(firstName: dictionnary["name"]!, lastName: dictionnary["lastName"]!)
+                    //TODO/ FIX let person = Person(firstName: dictionnary["name"]!, lastName: dictionnary["lastName"]!)
                     
-                    let person = persons.append(dictionnary["name"]!)
+                    //let person = persons.append(dictionnary["name"]!)
                     print(dictionnary)
                 }
             }
-            
-            
             print(dataArray)
-
         }
         
         
         self.title = "Mes contacts"
+    
         
-        persons.append("Michel Berger")
-        persons.append("Paris Dakar")
-        persons.append("James Bond")
+            let context = self.appDelegate().persistentContainer.viewContext
+            let person = Person(entity: Person.entity(), insertInto: context)
+            person.firstName = "Michel"
+            person.lastName = "Berger"
+            do{
+                try context.save()
+            } catch {
+                print(error.localizedDescription)
+            }
+
         
 
         // Uncomment the following line to preserve selection between presentations
@@ -72,11 +119,10 @@ class ContactsTableViewController: UITableViewController {
 
     @objc func addContactPress(){
         // create and push AddViewController
-        //Set the delagate
+        //Set the delegate
         let controller = AddViewController(nibName: nil, bundle: nil)
         controller.delegate = self
        navigationController?.pushViewController(controller, animated: true)
-        //self.present(controller, animated: true, completion: nil)
         print("Affichage add view")
     }
     
@@ -106,7 +152,8 @@ class ContactsTableViewController: UITableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ContactTableViewCell", for: indexPath)
         
         if let contactCell = cell as? ContactTableViewCell {
-            contactCell.nameLabel.text = persons[indexPath.row]
+            contactCell.nameLabel.text = persons[indexPath.row].firstName
+            
             
         }
 
@@ -122,10 +169,7 @@ class ContactsTableViewController: UITableViewController {
         self.navigationController?.pushViewController(controller, animated: true)
         
         
-        /* controller.onDeleteUser = { (personToDelete) in
-         self.persons = self.persons.filter({ (persons
- 
- */
+       
     }
     
     
