@@ -21,7 +21,7 @@
                                 <rect key="frame" x="0.0" y="28" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="23h-dz-CJ5" id="d2u-MV-ZkI">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GiL-uJ-kkh">
@@ -32,8 +32,10 @@
                                         </label>
                                     </subviews>
                                     <constraints>
+                                        <constraint firstItem="GiL-uJ-kkh" firstAttribute="leading" secondItem="d2u-MV-ZkI" secondAttribute="leading" id="17y-rn-Aby"/>
                                         <constraint firstAttribute="bottom" secondItem="GiL-uJ-kkh" secondAttribute="bottom" id="ZZ8-bR-PWi"/>
                                         <constraint firstAttribute="trailing" secondItem="GiL-uJ-kkh" secondAttribute="trailing" id="juD-MD-0VC"/>
+                                        <constraint firstAttribute="trailing" secondItem="GiL-uJ-kkh" secondAttribute="trailing" id="jyl-cR-Jsc"/>
                                         <constraint firstItem="GiL-uJ-kkh" firstAttribute="leading" secondItem="d2u-MV-ZkI" secondAttribute="leading" id="ltc-zP-mrV"/>
                                         <constraint firstItem="GiL-uJ-kkh" firstAttribute="top" secondItem="d2u-MV-ZkI" secondAttribute="top" id="zqy-e6-Zsd"/>
                                     </constraints>

@@ -13,8 +13,8 @@ extension ContactsTableViewController: AddViewControllerDelegate{
     
     func createPerson(person: Person) {
         print("create person")
-        //persons.append(person)
         navigationController?.popViewController(animated: true)
+        print("create person success")
         reloadDataFromDataBase()
         
     }
@@ -36,9 +36,8 @@ class ContactsTableViewController: UITableViewController {
         print(try? context.fetch(fetchRequest))
         // Add in persons : [Person]
         
-        guard let personCD = try? context.fetch(fetchRequest) else{
-            return
-        }
+        if let personCD = try? context.fetch(fetchRequest){
+            
         persons = personCD
         self.tableView.reloadData()
         
@@ -52,8 +51,9 @@ class ContactsTableViewController: UITableViewController {
         // Edit a person
         // person.lastName = "bjr"
         // try? context.save()
-        
+        }
     }
+
     
     override func viewWillAppear(_ animated: Bool) {
         self.reloadDataFromDataBase()
@@ -99,15 +99,15 @@ class ContactsTableViewController: UITableViewController {
         
         self.title = "Mes contacts"
         
-            let context = self.appDelegate().persistentContainer.viewContext
-            //let person = Person(entity: Person.entity(), insertInto: context)
-            //person.firstName = "Michel"
-            //person.lastName = "Berger"
-            do{
-                try context.save()
-            } catch {
-                print(error.localizedDescription)
-            }
+//            let context = self.appDelegate().persistentContainer.viewContext
+//            //let person = Person(entity: Person.entity(), insertInto: context)
+//            //person.firstName = "Michel"
+//            //person.lastName = "Berger"
+//            do{
+//                try context.save()
+//            } catch {
+//                print(error.localizedDescription)
+//            }
 
         
 

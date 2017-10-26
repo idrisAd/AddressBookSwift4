@@ -21,6 +21,8 @@ class DetailsViewController: UIViewController {
         super.viewDidLoad()
         self.title = person?.lastName
         
+        firstNameLabel.text = person?.firstName
+        lastNameLabel.text = person?.lastName
         
         // Do any additional setup after loading the view.
     }
