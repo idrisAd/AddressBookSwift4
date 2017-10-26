@@ -10,7 +10,7 @@ import UIKit
 
 
 protocol AddViewControllerDelegate: AnyObject {
-    func createPerson(/*name: String*/person: Person)
+    func createPerson(person: Person)
 }
 
 class AddViewController: UIViewController {
@@ -27,8 +27,7 @@ class AddViewController: UIViewController {
         super.viewDidLoad()
         self.title = "Add Person"
         self.progressBar.progress = 0
-
-        // Do any Ëdditional setup after loading the view.
+        
     }
 
     override func didReceiveMemoryWarning() {
@@ -36,6 +35,7 @@ class AddViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    // Add a person
     @IBAction func addButtonPress(_ sender: Any) {
         print("ajout")
         guard let nameField = self.nameText.text , let prenomField = self.prenomText.text else{
@@ -47,6 +47,7 @@ class AddViewController: UIViewController {
         personne.lastName = nameField
         var progressB = self.progressBar.progress
         
+        // Add a progress bar
         
         DispatchQueue.global(qos: .background).async {
             let counter: Float = 0.0

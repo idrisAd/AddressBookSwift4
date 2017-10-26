@@ -24,7 +24,6 @@ class ContactsTableViewController: UITableViewController {
     
     var persons = [Person]()
     
-    //var resultController: NSFetchedResultsController<Person>!
     
     func reloadDataFromDataBase(){
         let fetchRequest = NSFetchRequest<Person>(entityName: "Person")
@@ -43,6 +42,17 @@ class ContactsTableViewController: UITableViewController {
         persons = personCD
         self.tableView.reloadData()
         
+        
+        // Example for delete a person
+        
+        // let person = person [0]
+        // context.delete(person)
+        // try? context.save()
+        
+        // Edit a person
+        // person.lastName = "bjr"
+        // try? context.save()
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -53,7 +63,7 @@ class ContactsTableViewController: UITableViewController {
         super.viewDidLoad()
         
         
-        // Alerte de premier lancement
+        // Alert for the first launch
         if UserDefaults.standard.isFirstLaunch(){
             let alertController = UIAlertController(title: "Bienvenue", message: "Dans cette application permettant la gestion de contact", preferredStyle: .alert)
             let OKAction = UIAlertAction(title: "OK", style: .default){
@@ -66,8 +76,6 @@ class ContactsTableViewController: UITableViewController {
             
         }
         
-
-        
         // Import of names.plist
         let namesPlist = Bundle.main.path(forResource: "names.plist", ofType: nil)
         if let namePath = namesPlist{
@@ -75,12 +83,10 @@ class ContactsTableViewController: UITableViewController {
             let url = URL(fileURLWithPath: namePath)
             let dataArray = NSArray(contentsOf: url)
             
-            
-            
             for dict in dataArray!{
                 if let dictionnary = dict as? [String: String]{
                     
-                    // Avec la classe Person
+                    // With PErson class
                     //TODO/ FIX let person = Person(firstName: dictionnary["name"]!, lastName: dictionnary["lastName"]!)
                     
                     //let person = persons.append(dictionnary["name"]!)
@@ -92,12 +98,11 @@ class ContactsTableViewController: UITableViewController {
         
         
         self.title = "Mes contacts"
-    
         
             let context = self.appDelegate().persistentContainer.viewContext
-            let person = Person(entity: Person.entity(), insertInto: context)
-            person.firstName = "Michel"
-            person.lastName = "Berger"
+            //let person = Person(entity: Person.entity(), insertInto: context)
+            //person.firstName = "Michel"
+            //person.lastName = "Berger"
             do{
                 try context.save()
             } catch {
@@ -117,6 +122,7 @@ class ContactsTableViewController: UITableViewController {
         
     }
 
+    
     @objc func addContactPress(){
         // create and push AddViewController
         //Set the delegate
@@ -148,12 +154,12 @@ class ContactsTableViewController: UITableViewController {
         return 80
     }
     
+    // Name of cell on tableView
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ContactTableViewCell", for: indexPath)
         
         if let contactCell = cell as? ContactTableViewCell {
-            contactCell.nameLabel.text = persons[indexPath.row].firstName
-            
+            contactCell.nameLabel.text = persons[indexPath.row].firstName! + " " +  persons[indexPath.row].lastName!
             
         }
 
@@ -162,14 +168,12 @@ class ContactsTableViewController: UITableViewController {
         return cell
     }
     
-
+    
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let controller = DetailsViewController(nibName: nil, bundle: nil)
         controller.person = persons[indexPath.row]
         self.navigationController?.pushViewController(controller, animated: true)
-        
-        
-       
+    
     }
     
     
