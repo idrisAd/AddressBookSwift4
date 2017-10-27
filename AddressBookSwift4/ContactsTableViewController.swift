@@ -34,24 +34,24 @@ class ContactsTableViewController: UITableViewController {
     
     var persons = [Person]()
     
-    func reloadDataFromDataBase(){
-        let fetchRequest = NSFetchRequest<Person>(entityName: "Person")
-        let sortFirstName = NSSortDescriptor(key: "firstName", ascending: true)
-        let sortLastName = NSSortDescriptor(key: "lastName", ascending: true)
-        fetchRequest.sortDescriptors = [sortFirstName,sortLastName]
-        
-        let context = self.appDelegate().persistentContainer.viewContext
-        
-        print(try? context.fetch(fetchRequest))
-        
-        // Add in persons : [Person]
-        if let personCD = try? context.fetch(fetchRequest){
-            
-        persons = personCD
-        self.tableView.reloadData()
-        
-        }
-    }
+//    func reloadDataFromDataBase(){
+//        let fetchRequest = NSFetchRequest<Person>(entityName: "Person")
+//        let sortFirstName = NSSortDescriptor(key: "firstName", ascending: true)
+//        let sortLastName = NSSortDescriptor(key: "lastName", ascending: true)
+//        fetchRequest.sortDescriptors = [sortFirstName,sortLastName]
+//
+//        let context = self.appDelegate().persistentContainer.viewContext
+//
+//        print(try? context.fetch(fetchRequest))
+//
+//        // Add in persons : [Person]
+//        if let personCD = try? context.fetch(fetchRequest){
+//
+//        persons = personCD
+//        self.tableView.reloadData()
+//
+//        }
+//    }
     
     override func viewWillAppear(_ animated: Bool) {
        // self.appDelegate().updateDataFromServer()
@@ -137,8 +137,12 @@ class ContactsTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ContactTableViewCell", for: indexPath)
         
-        let currentPerson = resultController.object(at: indexPath)
-            cell.textLabel?.text = String(currentPerson.lastName! + " " + currentPerson.firstName!)
+        if let contactCell = cell as? ContactTableViewCell {
+            let currentPerson = resultController.object(at: indexPath)
+            contactCell.nameLabel.text = String(currentPerson.lastName! + " " + currentPerson.firstName!)
+        }
+        
+        
         return cell
         
     }

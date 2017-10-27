@@ -49,7 +49,8 @@ class AddViewController: UIViewController {
         
         var progressB = self.progressBar.progress
         
-        // - - - - - - - - - - - - - - - - - - - - - - - - - -
+        // Send a person with a picture on the server
+        
         let picture = "https://i.imgur.com/jNNT4LE.jpg"
         let parameters = ["surname": nameField, "lastname": prenomField, "pictureUrl": picture]
         
@@ -96,22 +97,19 @@ class AddViewController: UIViewController {
         task.resume()
         
         
-        
-        
-        
         // Progress bar for loading the addition
         
-        DispatchQueue.global(qos: .background).async {
-            let counter: Float = 0.0
-            while progressB < 1{
-                Thread.sleep(forTimeInterval: 0.05)
-                progressB += 0.1
-                
-                DispatchQueue.main.async {
-                    self.progressLabel.text = "\(counter)"
-                }
-            }
-        }
+//        DispatchQueue.global(qos: .background).async {
+//            let counter: Float = 0.0
+//            while progressB < 1{
+//                Thread.sleep(forTimeInterval: 0.05)
+//                progressB += 0.1
+//
+//                DispatchQueue.main.async {
+//                    self.progressLabel.text = "\(counter)"
+//                }
+//            }
+//        }
         
         DispatchQueue.global(qos: .userInitiated).async {
             while progressB < 1{

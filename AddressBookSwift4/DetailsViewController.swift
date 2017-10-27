@@ -17,6 +17,7 @@ class DetailsViewController: UIViewController {
     
     weak var person : Person?
     
+    @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var firstNameLabel: UILabel!
     @IBOutlet weak var lastNameLabel: UILabel!
     
@@ -28,6 +29,13 @@ class DetailsViewController: UIViewController {
         firstNameLabel.text = person?.firstName
         lastNameLabel.text = person?.lastName
         
+        
+        appDelegate().downloadResource(url: URL(string: (person?.avatarUrl!)!)!) { (data) in
+            DispatchQueue.main.async {
+                self.imageView.image = UIImage(data: data)
+            }
+        }
+        
         // Do any additional setup after loading the view.
     }
     
@@ -35,6 +43,12 @@ class DetailsViewController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
+    /*let picture = "https://i.imgur.com/jNNT4LE.jpg"*/
+    
+    
+    
+    
     
     var deleteDelegate : DetailsViewControllerDelegate?
     @IBAction func deleteButton(_ sender: Any) {

@@ -143,14 +143,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         for jsonPerson in json {
             let id = jsonPerson["id"] as? Int ?? 0
             if let index = personIds.index(of: Int32(id)) {
-                persons[index].lastName = jsonPerson["lastName"] as? String ?? "ERROR"
-                persons[index].firstName = jsonPerson["firstName"] as? String ?? "ERROR"
-                persons[index].avatarUrl = jsonPerson["avatarUrl"] as? String
+                persons[index].lastName = jsonPerson["lastname"] as? String ?? "ERROR"
+                persons[index].firstName = jsonPerson["surname"] as? String ?? "ERROR"
+                persons[index].avatarUrl = jsonPerson["pictureUrl"] as? String
             } else {
                 let person = Person(context: context)
                 person.lastName = jsonPerson["lastname"] as? String
                 person.firstName = jsonPerson["surname"] as? String
-                person.avatarUrl = jsonPerson["avatarUrl"] as? String
+                person.avatarUrl = jsonPerson["pictureUrl"] as? String
                 person.id = Int32(id)
             }
         }
@@ -191,6 +191,31 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
         }
         task.resume()
+    }
+    
+    func downloadResource(url: URL, onImageDownloaded: ((Data)->())?){
+        let task = URLSession.shared.dataTask(with: url) {
+            data, response, error in
+            if let error = error {
+                
+                print("Error: \(error.localizedDescription)")
+                
+                return
+            }
+            
+            if let data = data {
+                onImageDownloaded?(data)
+            }
+            
+            guard let response = response as? HTTPURLResponse, response.statusCode == 200 else {
+                return
+                
+            }
+            
+        }
+        task.resume()
+        
+        
     }
     
     
