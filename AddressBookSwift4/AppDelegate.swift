@@ -93,7 +93,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func updateDataFromServer(){
         
-        let url = URL(string: apiPersonUrl)!
+        let url = URL(string: "http://10.1.0.242:3000/persons")!
         
         let task = URLSession.shared.dataTask(with: url){ (data, response, error) in
             
@@ -105,6 +105,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             guard let jsonDict = dictionnary as? [[String : Any]] else{
                 return
             }
+            
+            self.updateFromJsonData(json: jsonDict)
             
             //TODO: Fetch entity from databes and compare ids
 

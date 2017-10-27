@@ -15,7 +15,6 @@ extension ContactsTableViewController: AddViewControllerDelegate{
         print("create person")
         navigationController?.popViewController(animated: true)
         print("create person success")
-        reloadDataFromDataBase()
         
     }
 }
@@ -33,8 +32,8 @@ class ContactsTableViewController: UITableViewController {
         let context = self.appDelegate().persistentContainer.viewContext
         
         print(try? context.fetch(fetchRequest))
-        // Add in persons : [Person]
         
+        // Add in persons : [Person]
         if let personCD = try? context.fetch(fetchRequest){
             
         persons = personCD
@@ -44,7 +43,7 @@ class ContactsTableViewController: UITableViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        self.appDelegate().updateDataFromServer()
+       // self.appDelegate().updateDataFromServer()
     }
 
     // Controller capable de voir les modifs en base
@@ -52,6 +51,10 @@ class ContactsTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        
+        appDelegate().updateDataFromServer()
+        
         let fetchRequest = NSFetchRequest<Person>(entityName: "Person")
         let sortFirstName = NSSortDescriptor(key: "firstName", ascending: true)
         let sortLastName = NSSortDescriptor(key: "lastName", ascending: true)
@@ -61,10 +64,9 @@ class ContactsTableViewController: UITableViewController {
                                                       sectionNameKeyPath: nil, cacheName: nil)
         resultController.delegate = self
         
-        try! resultController.performFetch()
-        
-        
+        try? resultController.performFetch()
         self.tableView.reloadData()
+        
         // Alert for the first launch
         if UserDefaults.standard.isFirstLaunch(){
             let alertController = UIAlertController(title: "Bienvenue", message: "Dans cette application permettant la gestion de contact", preferredStyle: .alert)
@@ -82,6 +84,7 @@ class ContactsTableViewController: UITableViewController {
         
         let addContact = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addContactPress))
         self.navigationItem.rightBarButtonItem = addContact
+       
         
     }
 
@@ -132,7 +135,7 @@ class ContactsTableViewController: UITableViewController {
         
     }
     
-    
+    // Onclick on each cells
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let controller = DetailsViewController(nibName: nil, bundle: nil)
         controller.person = resultController.object(at: indexPath)

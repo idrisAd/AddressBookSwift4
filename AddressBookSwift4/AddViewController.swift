@@ -50,23 +50,50 @@ class AddViewController: UIViewController {
         var progressB = self.progressBar.progress
         
         // - - - - - - - - - - - - - - - - - - - - - - - - - -
-//        let parameters = ["surname": nameField, "lastname": prenomField, "pictureUrl": "https://i.imgur.com/jNNT4LE.jpg"]
-//
-//        let url = URL(string : "http://10.1.0.242:3000/persons")!
-//
-//        let session = URLSession.shared
-//
-//        var request = URLRequest(url: url)
-//        request.httpMethod = "POST"
-//
-//        do {
-//            request.httpBody = try JSONSerialization.data(withJSONObject: parameters, options: .prettyPrinted)
-//        } catch let error {
-//            print(error.localizedDescription)
-//        }
-//
-//        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-//        request.addValue("application/json", forHTTPHeaderField: "Accept")
+        let picture = "https://i.imgur.com/jNNT4LE.jpg"
+        let parameters = ["surname": nameField, "lastname": prenomField, "pictureUrl": picture]
+        
+        let url = URL(string : "http://10.1.0.242:3000/persons")!
+        
+        let session = URLSession.shared
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        
+        do {
+            request.httpBody = try JSONSerialization.data(withJSONObject: parameters, options: .prettyPrinted)
+        } catch let error {
+            print(error.localizedDescription)
+        }
+        
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+        
+        let task = session.dataTask(with: request as URLRequest, completionHandler: { data, response, error in
+            guard error == nil else{
+                return
+            }
+            
+            guard let data = data else {
+                return
+            }
+            // Create json object from data
+            do{
+                if let json = try JSONSerialization.jsonObject(with: data, options: .mutableContainers) as? [String: Any]{
+                    print(json)
+                    // handle json  (recupere la data depuis le serveur)
+                    let person = Person(entity: Person.entity(), insertInto: self.appDelegate().persistentContainer.viewContext)
+                    person.lastName = json["surname"] as? String
+                    person.firstName = json["lastname"] as? String
+                    person.avatarUrl = json["pictureUrl"] as? String
+                    person.id = Int32(json["id"] as? Int ?? 0)
+                    try? context.save()
+                }
+            } catch let error{
+                print(error.localizedDescription)
+            }
+        })
+        task.resume()
         
         
         
