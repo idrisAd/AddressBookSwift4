@@ -164,6 +164,36 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         
     }
+    
+    func deleteContactOnServer(contact: Person) {
+        var urlRequest = URLRequest(url: URL(string: "http://10.1.0.242:3000/persons/" + String(contact.id))!)
+        urlRequest.httpMethod = "DELETE"
+        urlRequest.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        let task = URLSession.shared.dataTask(with: urlRequest) {
+            data, response, error in
+            if let error = error {
+                DispatchQueue.main.async {
+                    print("Error: \(error.localizedDescription)")
+                }
+                return
+            }
+            let jsonObject = data!
+            
+            guard let response = response as? HTTPURLResponse, response.statusCode == 200 else {
+                DispatchQueue.main.async {
+                    print("Server Error")
+                }
+                return
+            }
+            
+            if let string = String (data: jsonObject, encoding: .utf8) {
+                
+            }
+        }
+        task.resume()
+    }
+    
+    
 }
 
 extension UIViewController{

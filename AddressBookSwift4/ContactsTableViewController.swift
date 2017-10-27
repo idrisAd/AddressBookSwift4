@@ -19,6 +19,17 @@ extension ContactsTableViewController: AddViewControllerDelegate{
     }
 }
 
+extension ContactsTableViewController : DetailsViewControllerDelegate {
+    func deletePerson(person: Person) {
+        appDelegate().deleteContactOnServer(contact: person)
+        let context = self.appDelegate().persistentContainer.viewContext
+        context.delete(person)
+        try? context.save()
+        appDelegate().updateDataFromServer()
+        self.navigationController?.popViewController(animated: true)
+    }
+}
+
 class ContactsTableViewController: UITableViewController {
     
     var persons = [Person]()
@@ -52,7 +63,6 @@ class ContactsTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
         appDelegate().updateDataFromServer()
         
         let fetchRequest = NSFetchRequest<Person>(entityName: "Person")
@@ -77,15 +87,13 @@ class ContactsTableViewController: UITableViewController {
             }
             alertController.addAction(OKAction)
             self.present(alertController, animated: true, completion:nil)
-            
         }
         
         self.title = "Mes contacts"
         
         let addContact = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addContactPress))
         self.navigationItem.rightBarButtonItem = addContact
-       
-        
+
     }
 
     
@@ -195,9 +203,6 @@ extension ContactsTableViewController : NSFetchedResultsControllerDelegate{
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         self.tableView.reloadData()
     }
-    
-    
-    
-    
-  
 }
+
+

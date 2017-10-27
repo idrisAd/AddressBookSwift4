@@ -8,9 +8,12 @@
 
 import UIKit
 
+
+protocol DetailsViewControllerDelegate: AnyObject {
+    func deletePerson(person: Person) -> Void
+}
+
 class DetailsViewController: UIViewController {
-    
-    
     
     weak var person : Person?
     
@@ -33,13 +36,14 @@ class DetailsViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    var deleteDelegate : DetailsViewControllerDelegate?
     @IBAction func deleteButton(_ sender: Any) {
-        let alertController : UIAlertController = UIAlertController(title: "Suppression du contact", message: "Voulez-vous vraiment supprimer " + " ?", preferredStyle: UIAlertControllerStyle.alert)
+        let alertController : UIAlertController = UIAlertController(title: "Suppression du contact", message: "Voulez-vous vraiment supprimer ?", preferredStyle: UIAlertControllerStyle.alert)
         let confirmAction = UIAlertAction(title: "SUPPRIMER", style: UIAlertActionStyle.destructive, handler: {
             alert -> Void in
             
             print("Suppression")
-            self.deleteDelegate?.deleteContact(contact: self.contact)
+            self.deleteDelegate?.deletePerson(person: self.person!)
         })
         let cancelAction = UIAlertAction(title: "Annuler", style: UIAlertActionStyle.cancel, handler: {
             alert -> Void in
@@ -65,3 +69,5 @@ class DetailsViewController: UIViewController {
      */
     
 }
+
+
