@@ -17,6 +17,7 @@ class DetailsViewController: UIViewController {
     @IBOutlet weak var firstNameLabel: UILabel!
     @IBOutlet weak var lastNameLabel: UILabel!
     
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.title = person?.lastName
@@ -32,6 +33,26 @@ class DetailsViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    @IBAction func deleteButton(_ sender: Any) {
+        let alertController : UIAlertController = UIAlertController(title: "Suppression du contact", message: "Voulez-vous vraiment supprimer " + " ?", preferredStyle: UIAlertControllerStyle.alert)
+        let confirmAction = UIAlertAction(title: "SUPPRIMER", style: UIAlertActionStyle.destructive, handler: {
+            alert -> Void in
+            
+            print("Suppression")
+            self.deleteDelegate?.deleteContact(contact: self.contact)
+        })
+        let cancelAction = UIAlertAction(title: "Annuler", style: UIAlertActionStyle.cancel, handler: {
+            alert -> Void in
+            
+            print("Annulation suppression")
+            
+        })
+        alertController.addAction(confirmAction)
+        alertController.addAction(cancelAction)
+        self.present(alertController, animated: true)
+    }
+        
+
     
     /*
      // MARK: - Navigation
